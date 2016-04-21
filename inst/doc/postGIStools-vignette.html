@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Introduction to postGIStools</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div class="fluid-row" id="header">
+
+
+<h1 class="title">Introduction to postGIStools</h1>
+
+</div>
+
+
+<p>The postGIStools package extends the standard R / PostgreSQL interface (as implemented in RPostgreSQL) to provide support for two popular PostgreSQL extensions: <em>PostGIS</em> (spatial data) and <em>hstore</em> (key/value pairs).</p>
+<div id="reading-postgis-and-hstore-data-into-r" class="section level2">
+<h2>Reading PostGIS and hstore data into R</h2>
+<p>We demonstrate the postGIStools functions using a test database hosted on Heroku. It contains a single table <em>country</em> with the following fields:</p>
+<table style="width:82%;">
+<colgroup>
+<col width="16%"></col>
+<col width="12%"></col>
+<col width="52%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="left">type</th>
+<th align="left">comments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">name</td>
+<td align="left">text</td>
+<td align="left">country name</td>
+</tr>
+<tr class="even">
+<td align="left">iso2</td>
+<td align="left">text</td>
+<td align="left">ISO two-letter code (primary key)</td>
+</tr>
+<tr class="odd">
+<td align="left">capital</td>
+<td align="left">text</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">population</td>
+<td align="left">integer</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">translations</td>
+<td align="left">hstore</td>
+<td align="left">key/value pairs where key is language (e.g. “es”, “fr”)</td>
+</tr>
+<tr class="even">
+<td align="left">geom</td>
+<td align="left">geometry</td>
+<td align="left">country polygons</td>
+</tr>
+</tbody>
+</table>
+<p>The data originates from the <a href="https://restcountries.eu/">REST Countries API</a>, whereas the country geometries are from the <em>wrld_simpl</em> map included in maptools R package.</p>
+<p><em>Note: Currently, the test database cannot be accessed from a Windows or Mac OS X environment, due the lack of SSL support (which is required by Heroku) in those versions of RPostgreSQL.</em></p>
+<p>To read data from PostgreSQL into R, postGIStools provides the <code>get_postgis_query</code> function. Like the <code>dbGetQuery</code> function in PostgreSQL, it requires a connection object and a SQL statement, which in this case must be a SELECT statement. In addition, the user may indentify a geometry and/or hstore field by name. Note that since the geometry and hstore field names must be found in the query statement, wildcards (“SELECT *“) cannot be used.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RPostgreSQL)
+<span class="kw">library</span>(postGIStools)
+
+con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(<span class="kw">PostgreSQL</span>(), <span class="dt">dbname =</span> <span class="st">&quot;d2u06to89nuqei&quot;</span>, <span class="dt">user =</span> <span class="st">&quot;mzcwtmyzmgalae&quot;</span>,
+                 <span class="dt">host =</span> <span class="st">&quot;ec2-107-22-246-250.compute-1.amazonaws.com&quot;</span>,
+                 <span class="dt">password =</span> <span class="st">&quot;UTv2BuwJUPuruhDqJthcngyyvO&quot;</span>)
+
+countries &lt;-<span class="st"> </span><span class="kw">get_postgis_query</span>(con, <span class="st">&quot;SELECT name, iso2, capital, population,</span>
+<span class="st">                               translations, geom FROM country </span>
+<span class="st">                               WHERE population &gt; 1000000&quot;</span>,
+                               <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+
+<span class="kw">class</span>(countries)
+<span class="co">#&gt; [1] &quot;SpatialPolygonsDataFrame&quot;</span>
+<span class="co">#&gt; attr(,&quot;package&quot;)</span>
+<span class="co">#&gt; [1] &quot;sp&quot;</span></code></pre></div>
+<p>When a geometry column is specified, the query output is a spatial data frame type from the sp package. The hstore column is converted to a list-column in R, where each “cell” is a named list.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(countries@data[<span class="dv">1</span>:<span class="dv">2</span>,])
+<span class="co">#&gt; 'data.frame':    2 obs. of  5 variables:</span>
+<span class="co">#&gt;  $ name        : chr  &quot;Afghanistan&quot; &quot;Albania&quot;</span>
+<span class="co">#&gt;  $ iso2        : chr  &quot;AF&quot; &quot;AL&quot;</span>
+<span class="co">#&gt;  $ capital     : chr  &quot;Kabul&quot; &quot;Tirana&quot;</span>
+<span class="co">#&gt;  $ population  : int  26023100 2893005</span>
+<span class="co">#&gt;  $ translations:List of 2</span>
+<span class="co">#&gt;   ..$ :List of 5</span>
+<span class="co">#&gt;   .. ..$ de: chr &quot;Afghanistan&quot;</span>
+<span class="co">#&gt;   .. ..$ es: chr &quot;Afganistán&quot;</span>
+<span class="co">#&gt;   .. ..$ fr: chr &quot;Afghanistan&quot;</span>
+<span class="co">#&gt;   .. ..$ it: chr &quot;Afghanistan&quot;</span>
+<span class="co">#&gt;   .. ..$ ja: chr &quot;アフガニスタン&quot;</span>
+<span class="co">#&gt;   ..$ :List of 5</span>
+<span class="co">#&gt;   .. ..$ de: chr &quot;Albanien&quot;</span>
+<span class="co">#&gt;   .. ..$ es: chr &quot;Albania&quot;</span>
+<span class="co">#&gt;   .. ..$ fr: chr &quot;Albanie&quot;</span>
+<span class="co">#&gt;   .. ..$ it: chr &quot;Albania&quot;</span>
+<span class="co">#&gt;   .. ..$ ja: chr &quot;アルバニア&quot;</span></code></pre></div>
+</div>
+<div id="working-with-hstore-columns" class="section level2">
+<h2>Working with hstore columns</h2>
+<p>To interact with hstore columns imported into R, postGIStools defines the <code>%-&gt;%</code> operator, which is analogous to <code>-&gt;</code> in PostgreSQL. Specifically, <code>hstore %-&gt;% &quot;key&quot;</code> extracts the value in each cell of the hstore corresponding to the given key, or <code>NA</code> when the key is absent from a given cell.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(countries$translations %-&gt;%<span class="st"> &quot;es&quot;</span>)
+<span class="co">#&gt; [1] &quot;Afganistán&quot; &quot;Albania&quot;    &quot;Argelia&quot;    &quot;Angola&quot;     &quot;Argentina&quot; </span>
+<span class="co">#&gt; [6] &quot;Armenia&quot;</span></code></pre></div>
+<p>The operator is also compatible with single bracket subsetting of the hstore.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">countries$translations[<span class="dv">5</span>:<span class="dv">7</span>] %-&gt;%<span class="st"> &quot;fr&quot;</span>
+<span class="co">#&gt; [1] &quot;Argentine&quot; &quot;Arménie&quot;   &quot;Australie&quot;</span></code></pre></div>
+<p>The assignment version of <code>%-&gt;%</code> operates similarly, with the option of deleting keys by assigning them to <code>NULL</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">countries$translations[<span class="dv">2</span>] %-&gt;%<span class="st"> &quot;nl&quot;</span> &lt;-<span class="st"> &quot;Albanië&quot;</span>
+countries$translations[<span class="dv">3</span>] %-&gt;%<span class="st"> &quot;fr&quot;</span> &lt;-<span class="st"> </span><span class="ot">NULL</span>
+countries$translations[<span class="dv">2</span>:<span class="dv">3</span>]
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [[1]]$de</span>
+<span class="co">#&gt; [1] &quot;Albanien&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$es</span>
+<span class="co">#&gt; [1] &quot;Albania&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$fr</span>
+<span class="co">#&gt; [1] &quot;Albanie&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$it</span>
+<span class="co">#&gt; [1] &quot;Albania&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$ja</span>
+<span class="co">#&gt; [1] &quot;アルバニア&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[1]]$nl</span>
+<span class="co">#&gt; [1] &quot;Albanië&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [[2]]$de</span>
+<span class="co">#&gt; [1] &quot;Algerien&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$es</span>
+<span class="co">#&gt; [1] &quot;Argelia&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$it</span>
+<span class="co">#&gt; [1] &quot;Algeria&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]$ja</span>
+<span class="co">#&gt; [1] &quot;アルジェリア&quot;</span></code></pre></div>
+<p>The <code>new_hstore</code> function creates a blank hstore of a given length, which is just an empty list of lists. It is most useful when assigned to a data frame column (e.g. <code>df$hs &lt;- new_hstore(3)</code>) that can be then populated with <code>%-&gt;%</code> and written back to a PostgreSQL database.</p>
+</div>
+<div id="inserting-and-updating-postgresql-tables-from-r" class="section level2">
+<h2>Inserting and updating PostgreSQL tables from R</h2>
+<p>The two write methods <code>postgis_insert</code> and <code>postgis_update</code> wrap around their namesake SQL commands, while also converting R spatial objects and list-columns back into the geometry and hstore data types, respectively.</p>
+<p>To demonstrate these functions, we create a new temporary table in the database.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dbSendQuery</span>(con, <span class="kw">paste</span>(<span class="st">&quot;CREATE TEMP TABLE cty_tmp (name text,&quot;</span>, 
+                       <span class="st">&quot;iso2 text PRIMARY KEY, capital text,&quot;</span>,
+                       <span class="st">&quot;translations hstore, geom geometry)&quot;</span>))</code></pre></div>
+<p>Calls to <code>postgis_insert</code> must specify the connection, data frame and table name. By default, all data frame columns are inserted, but a subset of columns can be specified as <code>write_cols</code>. In both cases, the names of inserted columns must have a match in the target table.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postgis_insert</span>(con, countries[<span class="dv">1</span>:<span class="dv">10</span>,], <span class="st">&quot;cty_tmp&quot;</span>,
+               <span class="dt">write_cols =</span> <span class="kw">c</span>(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;iso2&quot;</span>, <span class="st">&quot;translations&quot;</span>),
+               <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+<span class="co">#&gt; &lt;PostgreSQLResult:(17372,1,4)&gt;</span>
+
+<span class="co"># Reimport to check</span>
+cty_tmp &lt;-<span class="st"> </span><span class="kw">get_postgis_query</span>(con, <span class="kw">paste</span>(<span class="st">&quot;SELECT name, iso2, capital,&quot;</span>,
+                                        <span class="st">&quot;geom, translations FROM cty_tmp&quot;</span>),
+                             <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+<span class="kw">head</span>(cty_tmp@data)
+<span class="co">#&gt;          name iso2 capital</span>
+<span class="co">#&gt; 1 Afghanistan   AF    &lt;NA&gt;</span>
+<span class="co">#&gt; 2     Albania   AL    &lt;NA&gt;</span>
+<span class="co">#&gt; 3     Algeria   DZ    &lt;NA&gt;</span>
+<span class="co">#&gt; 4      Angola   AO    &lt;NA&gt;</span>
+<span class="co">#&gt; 5   Argentina   AR    &lt;NA&gt;</span>
+<span class="co">#&gt; 6     Armenia   AM    &lt;NA&gt;</span>
+<span class="co">#&gt;                                                        translations</span>
+<span class="co">#&gt; 1 Afghanistan, Afganistán, Afghanistan, Afghanistan, アフガニスタン</span>
+<span class="co">#&gt; 2          Albanien, Albania, Albanie, Albania, アルバニア, Albanië</span>
+<span class="co">#&gt; 3                          Algerien, Argelia, Algeria, アルジェリア</span>
+<span class="co">#&gt; 4                          Angola, Angola, Angola, Angola, アンゴラ</span>
+<span class="co">#&gt; 5        Argentinien, Argentina, Argentine, Argentina, アルゼンチン</span>
+<span class="co">#&gt; 6                   Armenien, Armenia, Arménie, Armenia, アルメニア</span></code></pre></div>
+<p>We next update the records in <em>cty_tmp</em> to include the <em>capital</em> field. The syntax of <code>postgis_update</code> is similar to <code>postgis_insert</code>, except that we must specify both <code>id_cols</code>, the column(s) identifying the records to update, as well as <code>update_cols</code>, the column(s) to be updated. (The underlying PostgreSQL operation is of the format <em>UPDATE… SET … FROM…</em>.) Neither the geometry nor the hstore can be used as <code>id_cols</code>. Note that since the input data frame <code>countries[1:10,]</code> includes spatial and list-column data, we need to specify <code>geom_name</code> and <code>hstore_name</code>, even if those columns are not needed for the update operation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">postgis_update</span>(con, countries[<span class="dv">1</span>:<span class="dv">10</span>,], <span class="st">&quot;cty_tmp&quot;</span>, <span class="dt">id_cols =</span> <span class="st">&quot;iso2&quot;</span>, 
+               <span class="dt">update_cols =</span> <span class="st">&quot;capital&quot;</span>, <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, 
+               <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+<span class="co">#&gt; &lt;PostgreSQLResult:(17372,1,7)&gt;</span>
+
+cty_tmp &lt;-<span class="st"> </span><span class="kw">get_postgis_query</span>(con, <span class="kw">paste</span>(<span class="st">&quot;SELECT name, iso2, capital,&quot;</span>,
+                                        <span class="st">&quot;geom, translations FROM cty_tmp&quot;</span>),
+                             <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+<span class="kw">head</span>(cty_tmp@data)
+<span class="co">#&gt;          name iso2      capital</span>
+<span class="co">#&gt; 1   Australia   AU     Canberra</span>
+<span class="co">#&gt; 2 Afghanistan   AF        Kabul</span>
+<span class="co">#&gt; 3     Albania   AL       Tirana</span>
+<span class="co">#&gt; 4     Algeria   DZ      Algiers</span>
+<span class="co">#&gt; 5      Angola   AO       Luanda</span>
+<span class="co">#&gt; 6   Argentina   AR Buenos Aires</span>
+<span class="co">#&gt;                                                        translations</span>
+<span class="co">#&gt; 1       Australien, Australia, Australie, Australia, オーストラリア</span>
+<span class="co">#&gt; 2 Afghanistan, Afganistán, Afghanistan, Afghanistan, アフガニスタン</span>
+<span class="co">#&gt; 3          Albanien, Albania, Albanie, Albania, アルバニア, Albanië</span>
+<span class="co">#&gt; 4                          Algerien, Argelia, Algeria, アルジェリア</span>
+<span class="co">#&gt; 5                          Angola, Angola, Angola, Angola, アンゴラ</span>
+<span class="co">#&gt; 6        Argentinien, Argentina, Argentine, Argentina, アルゼンチン</span></code></pre></div>
+<p>By default, hstore columns are updated by concatenation: keys present in the input data frame but not the original table are added to the hstore, keys present in both the data frame and table have their associated values updated, but keys absent from the input data frame are <em>not</em> deleted from the table. This can be changed by setting <code>hstore_concat = FALSE</code>, in which case whole hstore cells are replaced with corresponding ones in the input data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">countries$translations[<span class="dv">2</span>] %-&gt;%<span class="st"> &quot;nl&quot;</span> &lt;-<span class="st"> </span><span class="ot">NULL</span>
+countries$translations[<span class="dv">3</span>] %-&gt;%<span class="st"> &quot;fr&quot;</span> &lt;-<span class="st"> &quot;Algérie&quot;</span>
+ 
+<span class="kw">postgis_update</span>(con, countries[<span class="dv">1</span>:<span class="dv">10</span>,], <span class="st">&quot;cty_tmp&quot;</span>, <span class="dt">id_cols =</span> <span class="st">&quot;iso2&quot;</span>, 
+               <span class="dt">update_cols =</span> <span class="st">&quot;translations&quot;</span>, <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, 
+               <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+<span class="co">#&gt; &lt;PostgreSQLResult:(17372,1,10)&gt;</span>
+
+cty_tmp &lt;-<span class="st"> </span><span class="kw">get_postgis_query</span>(con, <span class="kw">paste</span>(<span class="st">&quot;SELECT name, iso2, capital,&quot;</span>,
+                                        <span class="st">&quot;geom, translations FROM cty_tmp&quot;</span>),
+                             <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+cty_tmp@data[cty_tmp$iso2 %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AL&quot;</span>, <span class="st">&quot;DZ&quot;</span>), ]
+<span class="co">#&gt;      name iso2 capital</span>
+<span class="co">#&gt; 2 Albania   AL  Tirana</span>
+<span class="co">#&gt; 5 Algeria   DZ Algiers</span>
+<span class="co">#&gt;                                               translations</span>
+<span class="co">#&gt; 2 Albanien, Albania, Albanie, Albania, アルバニア, Albanië</span>
+<span class="co">#&gt; 5        Algerien, Argelia, Algérie, Algeria, アルジェリア</span>
+
+<span class="co"># Key deletion not reflected in database unless hstore_concat = FALSE</span>
+<span class="kw">postgis_update</span>(con, countries[<span class="dv">1</span>:<span class="dv">10</span>,], <span class="st">&quot;cty_tmp&quot;</span>, <span class="dt">id_cols =</span> <span class="st">&quot;iso2&quot;</span>, 
+               <span class="dt">update_cols =</span> <span class="st">&quot;translations&quot;</span>, <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, 
+               <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>, <span class="dt">hstore_concat =</span> <span class="ot">FALSE</span>)
+<span class="co">#&gt; &lt;PostgreSQLResult:(17372,1,13)&gt;</span>
+
+cty_tmp &lt;-<span class="st"> </span><span class="kw">get_postgis_query</span>(con, <span class="kw">paste</span>(<span class="st">&quot;SELECT name, iso2, capital,&quot;</span>,
+                                        <span class="st">&quot;geom, translations FROM cty_tmp&quot;</span>),
+                             <span class="dt">geom_name =</span> <span class="st">&quot;geom&quot;</span>, <span class="dt">hstore_name =</span> <span class="st">&quot;translations&quot;</span>)
+cty_tmp@data[cty_tmp$iso2 %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AL&quot;</span>, <span class="st">&quot;DZ&quot;</span>), ]
+<span class="co">#&gt;      name iso2 capital                                      translations</span>
+<span class="co">#&gt; 2 Albania   AL  Tirana   Albanien, Albania, Albanie, Albania, アルバニア</span>
+<span class="co">#&gt; 5 Algeria   DZ Algiers Algerien, Argelia, Algérie, Algeria, アルジェリア</span></code></pre></div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
