@@ -12,8 +12,7 @@ con <- dbConnect(PostgreSQL(), dbname = "d2u06to89nuqei", user = "mzcwtmyzmgalae
                  host = "ec2-107-22-246-250.compute-1.amazonaws.com",
                  password = "UTv2BuwJUPuruhDqJthcngyyvO")
 
-countries <- get_postgis_query(con, "SELECT name, iso2, capital, population,
-                               translations, geom FROM country 
+countries <- get_postgis_query(con, "SELECT * FROM country 
                                WHERE population > 1000000",
                                geom_name = "geom", hstore_name = "translations")
 
@@ -21,6 +20,12 @@ class(countries)
 
 ## ----data_str------------------------------------------------------------
 str(countries@data[1:2,])
+
+## ----get_query_centr-----------------------------------------------------
+centroids <- get_postgis_query(con, 
+                        "SELECT name, ST_Centroid(geom) centr FROM country",
+                        geom_name = "centr")
+head(centroids)
 
 ## ----hstore_select-------------------------------------------------------
 head(countries$translations %->% "es")
