@@ -1,10 +1,10 @@
-3af33651ed94ab972d09d89d7bcbb573 *DESCRIPTION
+e6ce7d3e1816f579cffd34d42f349541 *DESCRIPTION
 20ad889aadfcdd0e447ade520f28e230 *NAMESPACE
-1a05204cbba9498d2c17d4185fca48c9 *NEWS.md
+7e61b27ed63d5d5f353c976ee90e69cc *NEWS.md
 03e57de42d130e2f93f6141f745babd3 *R/get_postgis_query.R
 41f67b8e87441ee295bb82dad8d2c218 *R/hstore.R
 e9a9fc026ef7ba4a014ac73fbdf33d44 *R/postGIStools.R
-578c2f5d55a8a540b69e88be0d06f831 *R/postgis_insert_update.R
+ab4a1ebf6ab3fb65531c92fa8dc91a52 *R/postgis_insert_update.R
 eb02f8dd91c360a054228967e853e333 *R/postgis_utils.R
 83eac8e6c5d1453567ddd84247a7f6eb *README.md
 ccaca3f4762f201413c831df63c49fe7 *build/vignette.rds
@@ -20,5 +20,5 @@ db25171ae9b7b53929b1a6b7d42e6d6e *man/postgis_insert_update.Rd
 1d63b692061f4f875631c045967184a5 *tests/testthat/country_sp.rds
 df7accc41943776246ddbaef1f5001ba *tests/testthat/test_get_query.R
 2d548bbcab7512e1189478a01c35ff39 *tests/testthat/test_hstore.R
-4cab12b7e1417326bf88aabb63821a87 *tests/testthat/test_insert_update.R
+18fbde36e15442a78ce38e00465c69f8 *tests/testthat/test_insert_update.R
 e1979c65ef93f7a4743ab2f40c54dd61 *vignettes/postGIStools-vignette.Rmd
