@@ -18,7 +18,7 @@ hstore \%->\% key <- value
 }
 \value{
 For the extract version, a vector of the same length as \code{hstore},
- containing the value correponding to \code{key} for each record
+ containing the value corresponding to \code{key} for each record
  (or \code{NA} if none). For the replace version, the modified hstore.
 }
 \description{
@@ -52,4 +52,3 @@ contacts$phone \%->\% "cell"
 \seealso{
 \code{\link{new_hstore}} to create a empty hstore.
 }
-
