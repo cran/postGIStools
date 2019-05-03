@@ -5,11 +5,12 @@
 \alias{postgis_update}
 \title{Insert or update records in a PostgreSQL table from a R data frame.}
 \usage{
-postgis_insert(conn, df, tbl, write_cols = NA, geom_name = NA_character_,
-  hstore_name = NA_character_)
+postgis_insert(conn, df, tbl, write_cols = NA,
+  geom_name = NA_character_, hstore_name = NA_character_)
 
-postgis_update(conn, df, tbl, id_cols, update_cols, geom_name = NA_character_,
-  hstore_name = NA_character_, hstore_concat = TRUE)
+postgis_update(conn, df, tbl, id_cols, update_cols,
+  geom_name = NA_character_, hstore_name = NA_character_,
+  hstore_concat = TRUE)
 }
 \arguments{
 \item{conn}{A \code{\link[RPostgreSQL]{PostgreSQLConnection-class}} object,

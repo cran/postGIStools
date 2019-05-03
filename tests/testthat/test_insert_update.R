@@ -27,26 +27,26 @@ if (!is.null(con)) {
     }
 
 
-    # Insert first two rows and re-import
-    postgis_insert(con, country_sp[1:2, ], "cty_tmp",
+    # Insert first four rows and re-import
+    postgis_insert(con, country_sp[1:4, ], "cty_tmp",
                    geom_name = "geom", hstore_name = "translations")
     qry <- import_cty_tmp()
 }
 
 test_that("postgis_insert correctly inserts full rows", {
     if (is.null(con)) skip("PostgreSQL connection unavailable")
-    expect_equal(country_sp@polygons[1:2], qry@polygons)
-    expect_equal(country_sp@data[1:2, -5], qry@data[, -5])
-    expect_equal(country_sp$translations[1:2] %->% "it",
-                 qry$translations %->% "it")
+    expect_equal(country_sp@polygons[3:4], qry@polygons[3:4])
+    expect_equal(country_sp@data[3:4, -5], qry@data[3:4, -5])
+    expect_equal(country_sp$translations[3:4] %->% "it",
+                 qry$translations[3:4] %->% "it")
 })
 
 
 if (!is.null(con)) {
     # Insert partial information for a few rows
-    postgis_insert(con, country_sp[3, ], "cty_tmp",
+    postgis_insert(con, country_sp[5, ], "cty_tmp",
                    write_cols = c("name", "iso2"), geom_name = "geom")
-    postgis_insert(con, country_sp[4, ], "cty_tmp",
+    postgis_insert(con, country_sp[6, ], "cty_tmp",
                    write_cols = c("name", "iso2", "translations"),
                    geom_name = "geom", hstore_name = "translations")
     qry <- import_cty_tmp()
@@ -54,19 +54,19 @@ if (!is.null(con)) {
 
 test_that("postgis_insert correctly inserts partial rows", {
     if (is.null(con)) skip("PostgreSQL connection unavailable")
-    expect_equal(country_sp@polygons[1:4], qry@polygons)
-    expect_equal(country_sp$translations[c(1, 2, 4)] %->% "es",
-                 qry$translations[c(1, 2, 4)] %->% "es")
+    expect_equal(country_sp@polygons[3:6], qry@polygons[3:6])
+    expect_equal(country_sp$translations[c(3, 4, 6)] %->% "es",
+                 qry$translations[c(3, 4, 6)] %->% "es")
 })
 
 
 if (!is.null(con)) {
-    # Use postgis_update to fill in missing fields in rows 3-4
+    # Use postgis_update to fill in missing fields in rows 5-6
     #  also add, delete and replace values in row 4 hstore
     country_sp$translations[4] %->% "en" <- "Algeria"
     country_sp$translations[4] %->% "fr" <- "AlgErie"
     country_sp$translations[4] %->% "it" <- NULL
-    postgis_update(con, country_sp[3:4, ], "cty_tmp", id_cols = "iso2",
+    postgis_update(con, country_sp[4:6, ], "cty_tmp", id_cols = "iso2",
                    update_cols = c("capital", "population", "translations"),
                    geom_name = "geom", hstore_name = "translations")
     qry <- import_cty_tmp()
@@ -74,13 +74,13 @@ if (!is.null(con)) {
 
 test_that("postgis_update works with basic data types", {
     if (is.null(con)) skip("PostgreSQL connection unavailable")
-    expect_equal(country_sp@data[1:4, 1:4], qry@data[, 1:4])
+    expect_equal(country_sp@data[3:6, 1:4], qry@data[3:6, 1:4])
 })
 
 test_that("postgis_update correctly inserts new hstore", {
     if (is.null(con)) skip("PostgreSQL connection unavailable")
-    expect_equal(country_sp$translations[3] %->% "it",
-                 qry$translations[3] %->% "it")
+    expect_equal(country_sp$translations[5] %->% "it",
+                 qry$translations[5] %->% "it")
 })
 
 test_that("postgis_update correctly updates existing hstore", {
@@ -112,14 +112,8 @@ if (!is.null(con)) {
     for (col in c("name", "iso2", "capital")) {
         country_fact[[col]] <- as.factor(country_fact[[col]])
     }
-    postgis_insert(con, country_fact[5:6, ], "cty_tmp",
-                   write_cols = c("name", "iso2", "population", "translations"),
-                   geom_name = "geom", hstore_name = "translations")
     postgis_insert(con, country_fact[7:8, ], "cty_tmp",
                    write_cols = c("iso2", "population", "translations"),
-                   geom_name = "geom", hstore_name = "translations")
-    postgis_update(con, country_fact[5:6, ], "cty_tmp", id_cols = "iso2",
-                   update_cols = "capital",
                    geom_name = "geom", hstore_name = "translations")
     postgis_update(con, country_fact[7:8, ], "cty_tmp", id_cols = "iso2",
                    update_cols = c("name", "capital"),
@@ -129,7 +123,7 @@ if (!is.null(con)) {
 
 test_that("insert/update works from factor columns", {
     if (is.null(con)) skip("PostgreSQL connection unavailable")
-    expect_equal(country_sp@data[5:8, 1:4], qry@data[5:8, 1:4],
+    expect_equal(country_sp@data[7:8, 1:4], qry@data[7:8, 1:4],
                  check.attributes = FALSE)
 })
 

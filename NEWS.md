@@ -1,3 +1,13 @@
+postGIStools 0.2.3
+==================
+
+* Correct issue with package failing in a Latin-1 locale.
+
+postGIStools 0.2.2
+==================
+
+* Note that package is deprecated in favor of sf.
+
 postGIStools 0.2.1
 ==================
 

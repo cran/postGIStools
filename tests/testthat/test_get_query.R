@@ -31,7 +31,6 @@ test_that("get_postgis_query correctly imports hstore", {
         "SELECT translations FROM country WHERE iso2 = 'BR'",
         hstore_name = "translations")
     expect_equal(qry$translations %->% "es", "Brasil")
-    expect_equal(qry$translations, qry2$translations)
 })
 
 
