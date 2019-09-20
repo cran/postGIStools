@@ -1,3 +1,8 @@
+postGIStools 0.2.4
+==================
+
+* Remove tests based on unavailable database.
+
 postGIStools 0.2.3
 ==================
 
